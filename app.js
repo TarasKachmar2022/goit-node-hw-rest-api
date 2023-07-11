@@ -1,8 +1,11 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-
+// require("dotenv").config();  імпорт і відразу виклик
+const dotenv = require("dotenv");
 const contactsRouter = require("./routes/api/contacts");
+
+dotenv.config();
 
 const app = express();
 
