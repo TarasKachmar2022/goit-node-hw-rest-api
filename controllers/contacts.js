@@ -1,4 +1,4 @@
-const { Contact, schemas } = require("../models/contact");
+const { Contact } = require("../models/contact");
 const { HttpError, ctrlWrapper } = require("../utils");
 
 const getContacts = async (req, res) => {
@@ -16,10 +16,6 @@ const getContactById = async (req, res) => {
 };
 
 const addContact = async (req, res) => {
-  const { error } = schemas.addSchema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
   const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
@@ -36,10 +32,6 @@ const removeContact = async (req, res) => {
 };
 
 const updateContact = async (req, res) => {
-  const { error } = schemas.addSchema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
   const { contactId } = req.params;
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
@@ -51,10 +43,6 @@ const updateContact = async (req, res) => {
 };
 
 const updateFavorite = async (req, res) => {
-  const { error } = schemas.updateFavoriteSchema.validate(req.body);
-  if (error) {
-    throw HttpError(400, error.message);
-  }
   const { contactId } = req.params;
   const result = await Contact.findByIdAndUpdate(contactId, req.body, {
     new: true,
