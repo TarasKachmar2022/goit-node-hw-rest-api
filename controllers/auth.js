@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const { User } = require("../models/user");
 const { HttpError, ctrlWrapper } = require("../utils");
+const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -15,8 +18,11 @@ const register = async (req, res) => {
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
   res.status(201).json({
-    name: newUser.name,
-    email: newUser.email,
+    // name: newUser.name,
+    user: {
+      email: newUser.email,
+      subscription: newUser.subscription,
+    },
   });
 };
 
@@ -32,9 +38,19 @@ const login = async (req, res) => {
     throw HttpError(401, "Email or password invalid");
   }
 
-  const token = "fsdfdsfsdf.dfsadfsafsdf.sdfsadfsdfsadf";
+  const payload = {
+    id: user._id,
+  };
 
-  res.json({ token });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+
+  res.json({
+    token,
+    user: {
+      email: user.email,
+      subscription: user.subscription,
+    },
+  });
 };
 
 module.exports = {
