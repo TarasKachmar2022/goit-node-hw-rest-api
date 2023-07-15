@@ -9,4 +9,6 @@ router.post("/register", validateBody(schemas.registerSchema), ctrl.register);
 
 router.post("/login", validateBody(schemas.loginSchema), ctrl.login);
 
+router.get("/current", authentificate, ctrl.getCurrent)
+
 module.exports = router;
