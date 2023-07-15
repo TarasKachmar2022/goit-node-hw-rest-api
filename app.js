@@ -1,12 +1,12 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
-// require("dotenv").config();  імпорт і відразу виклик
-const dotenv = require("dotenv");
+require("dotenv").config();
+// аналогічно але є нюанси (потрібно повторно викликати в мідлварах)
+// const dotenv = require("dotenv");
+// dotenv.config();
 const authRoter = require("./routes/api/auth");
 const contactsRouter = require("./routes/api/contacts");
-
-dotenv.config();
 
 const app = express();
 
