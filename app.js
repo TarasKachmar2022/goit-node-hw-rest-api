@@ -5,7 +5,7 @@ require("dotenv").config();
 // аналогічно але є нюанси (потрібно повторно викликати в мідлварах)
 // const dotenv = require("dotenv");
 // dotenv.config();
-const authRoter = require("./routes/api/auth");
+const authRouter = require("./routes/api/auth");
 const contactsRouter = require("./routes/api/contacts");
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoter);
+app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {
