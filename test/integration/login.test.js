@@ -2,6 +2,7 @@ require("dotenv").config();
 
 const supertest = require("supertest");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const { app } = require("../../app");
 const { User } = require("../../models/user");
 
@@ -15,9 +16,13 @@ describe("login", () => {
 
     await User.deleteMany();
 
+    const testPassword = "12345678";
+
+    const hashPassword = await bcrypt.hash(testPassword, 10);
+
     await User.create({
       email: "testUser1@gmail.com",
-      password: "12345678",
+      password: hashPassword,
     });
   });
 
@@ -40,8 +45,8 @@ describe("login", () => {
       password: "12345678",
     });
 
-    expect(response.body.data.token).toBeTruthy();
-    expect(typeof response.body.data.token).toBe("string");
+    expect(response.body.token).toBeTruthy();
+    expect(typeof response.body.token).toBe("string");
   });
 
   test("should return correct user object", async () => {
@@ -50,8 +55,8 @@ describe("login", () => {
       password: "12345678",
     });
 
-    expect(response.body.data.user).toBeDefined();
-    expect(typeof response.body.data.user.email).toBe("string");
-    expect(typeof response.body.data.user.subscription).toBe("string");
+    expect(response.body.user).toBeDefined();
+    expect(typeof response.body.user.email).toBe("string");
+    expect(typeof response.body.user.subscription).toBe("string");
   });
 });
