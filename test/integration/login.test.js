@@ -14,7 +14,7 @@ describe("login", () => {
   beforeAll(async () => {
     await mongoose.connect(DB_TEST_HOST);
 
-    await User.deleteMany();
+    await User.deleteMany().exec();
 
     const testPassword = "12345678";
 
