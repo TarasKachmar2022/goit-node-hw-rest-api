@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { app } = require("../../app");
 const { User } = require("../../models/user");
-const { verificationToken } = require("../../controllers/auth");
 
 mongoose.set("strictQuery", false);
 
@@ -22,15 +21,8 @@ describe("login", () => {
     const hashPassword = await bcrypt.hash(testPassword, 10);
 
     await User.create({
-      email: "testUser3@gmail.com",
+      email: "testUser1@gmail.com",
       password: hashPassword,
-    });
-
-    const user = await User.findOne({ verificationToken });
-
-    await User.findByIdAndUpdate(user._id, {
-      verify: true,
-      verificationToken: null,
     });
   });
 
@@ -40,7 +32,7 @@ describe("login", () => {
 
   test("should return status 200", async () => {
     const response = await supertest(app).post("/api/auth/login").send({
-      email: "testUser3@gmail.com",
+      email: "testUser1@gmail.com",
       password: "12345678",
     });
 
@@ -49,7 +41,7 @@ describe("login", () => {
 
   test("should return user token", async () => {
     const response = await supertest(app).post("/api/auth/login").send({
-      email: "testUser3@gmail.com",
+      email: "testUser1@gmail.com",
       password: "12345678",
     });
 
@@ -59,7 +51,7 @@ describe("login", () => {
 
   test("should return correct user object", async () => {
     const response = await supertest(app).post("/api/auth/login").send({
-      email: "testUser3@gmail.com",
+      email: "testUser1@gmail.com",
       password: "12345678",
     });
 
